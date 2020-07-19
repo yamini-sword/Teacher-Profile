@@ -8,13 +8,22 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel='stylesheet' href='{% static 'base.css' %}'>
+    <script>
+        function validateForm() {
+            var x = document.forms["publishForm"]["csv_file"].value;
+            if (x == "") {
+                alert("Please Uplaod File !!!");
+                return false;
+            }
+        }
+    </script>
 </head>
 
 <body>
     <div>
         <a href='/directory/home'><i class="arrow-profile left-profile"></i>Go Back</a>
         <div class="container-import">
-            <form id="publishFormKathi" action="/directory/import/process" method="post" novalidate="novalidate">
+            <form id="publishForm" action="/directory/import/process" enctype="multipart/form-data"  method="post" onsubmit="return validateForm()" novalidate="novalidate">
 
                 {% csrf_token %}
                 <div class="file-importer-container-import">

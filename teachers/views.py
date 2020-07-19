@@ -76,8 +76,11 @@ def load_importer(request):
 def process_import(request):
     data = request.POST
     if data is not None:
-        file_name = os.path.join(settings.BASE_DIR, "import", data["csv_file"])
-        df = pd.read_csv(file_name)
+        uploaded_file = request.FILES['csv_file']
+        if not uploaded_file.name.endswith('.csv'):
+            return render(request, 'teachers/importer.html',
+                    {"vaildate": "Uplaod vaild file"})
+        df = pd.read_csv(uploaded_file)
         df = df.fillna('')
         #importing logic
         for index, row in df.iterrows():
