@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Importer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel='stylesheet' href='{% static 'base.css' %}'>
+</head>
+
+<body>
+    <div>
+        <a href='/directory/home'><i class="arrow-profile left-profile"></i>Go Back</a>
+        <div class="container-import">
+            <form id="publishFormKathi" action="/directory/import/process" method="post" novalidate="novalidate">
+
+                {% csrf_token %}
+                <div class="file-importer-container-import">
+                    <input type="file" name="csv_file" class="input-file" />
+                    <input type="submit" value="Import" class="btn btn-success btn-lg" />
+                    <p>(.csv files Only)</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

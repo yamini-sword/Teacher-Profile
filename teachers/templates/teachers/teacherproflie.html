@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{teacher.last_name}}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel='stylesheet' href='{% static 'base.css' %}'>
+</head>
+
+<body>
+    <div class="container-profile">
+        {% if login %}
+        <div>
+            <a href="/logout" class="btn btn-outline-danger">Logout</a>
+        </div>
+        {% else %}
+        <div>
+            <p><a href="/login">Login</a></p>
+        </div>
+        {% endif %}
+        <div class="profile-container">
+            <a href='/directory/home'><i class="arrow-profile left-profile"></i>Go Back</a>
+            <div class="image-block">
+                <img src="{% static 'teachers/'%}{{teacher.profile_picture}}" />
+            </div>
+            <div id="teachersTable-profile">
+                <h3>First Name: <span>{{teacher.first_name}}</span></h3>
+
+                <h3>Last Name: <span>{{teacher.last_name}}</span></h3>
+
+                <h3>Email Address: <span>{{teacher.email}}</span></h3>
+
+                <h3>Phone Number: <span>{{teacher.phone_number}}</span></h3>
+
+                <h3>Room Number: <span>{{teacher.room_number}}</span></h3>
+
+                <h3>Subjects:
+                    {% for s in teacher.subjects.all %}
+                    <span>{{s.name}}, </span>
+                    {% endfor %}
+                </h3>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

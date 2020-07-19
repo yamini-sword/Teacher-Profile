@@ -1,0 +1,343 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teachers Directory</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<link rel='stylesheet' href='{% static 'base.css' %}'>
+</head>
+<body>
+<div class="main">
+<div class="account-actions">
+{% if login %}
+<p><a href="/logout" class="btn btn-outline-danger">Logout</a></p>
+{% else %}
+<p><a href="/login" class="btn btn-outline-primary">Login</a></p>
+{% endif %}
+</div>
+<h3>TEACHERS DIRECTORY</h3>
+<div class="form-group row">
+    <div class="col-4">
+    <input type="text" id="lname_input" onkeyup="filter_last_name()" placeholder="Search for last names.." class="form-control form-control-lg" title="Type in using your last name">
+    </div>
+    <div class="col-4">
+    <input type="text" id="sub_input" onkeyup="filter_subject()" placeholder="Search for subjects.." class="form-control form-control-lg" title="Type in a subject">
+    </div>
+    <div class="col-4">
+    {% if login %}
+    <a href="/directory/import" class="btn btn-success btn-lg">Import</a>
+    {% endif %}
+    </div>
+</div>
+<table id="teachersTable">
+  <tr>
+    <th>First Name
+    <div class="sort-order">
+        <div class="order-asc" onclick="sortFNameAsc()"><i class="arrow up"></i></div>
+        <div class="order-desc" onclick="sortFNameDesc()"><i class="arrow down"></i></div>
+    </div>
+    </th>
+    <th>Last Name
+    <div class="sort-order">
+        <div onclick="sortLNameAsc()"><i class="arrow up"></i></div>
+        <div onclick="sortLNameDesc()"><i class="arrow down"></i></div>
+        </div>
+    </th>
+    <th>Email Address</th>
+    <th>Phone Number</th>
+    <th>Room Number</th>
+    <th>Subject
+    <div class="sort-order">
+        <div onclick="sortSubjectAsc()"><i class="arrow up"></i></div>
+        <div onclick="sortSubjectDesc()"><i class="arrow down"></i></div>
+        </div>
+    </th>
+    <th>View Profile</th>
+  </tr>
+    {% for t in teachers %}
+    <tr>
+    <td>{{t.first_name}}</td>
+    <td>{{t.last_name}}</td>
+        <td><a href="/directory/teacher/{{t.email}}">{{t.email}}</a></td>
+    <td>{{t.phone_number}}</td>
+    <td>{{t.room_number}}</td>
+    <td>{{t.subject}}</td>
+    <td class="action-col"><a href="/directory/teacher/{{t.email}}" class="btn btn-info">View</a></td>
+    </tr>
+    {% endfor %}
+</table>
+    {% if not teachers %}
+      <p class="no-record">No Records to display.Please Import Files</p>
+    {% endif %}
+
+<script>
+// Sorting First Name
+
+function sortFNameAsc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+
+function sortFNameDesc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+// End sorting First Name
+
+// Sorting Last Name
+
+function sortLNameAsc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[1];
+      y = rows[i + 1].getElementsByTagName("TD")[1];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+
+function sortLNameDesc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[1];
+      y = rows[i + 1].getElementsByTagName("TD")[1];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+// End sorting Last Name
+
+// Sorting Subject
+
+function sortSubjectAsc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[5];
+      y = rows[i + 1].getElementsByTagName("TD")[5];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+
+function sortSubjectDesc() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("teachersTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[5];
+      y = rows[i + 1].getElementsByTagName("TD")[5];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+// End sorting Subject
+
+//Filtering
+
+function filter_last_name() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("lname_input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("teachersTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td_lname = tr[i].getElementsByTagName("td")[1];
+    if (td_lname) {
+      txtValue_lname = td_lname.textContent || td_lname.innerText ;
+      if (txtValue_lname.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function filter_subject() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("sub_input");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("teachersTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td_subject = tr[i].getElementsByTagName("td")[5];
+    if (td_subject) {
+
+      txtValue_sub = td_subject.textContent || td_subject.innerText ;
+      if (txtValue_sub.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+// End of filtering
+
+</script>
+</div>
+</body>
+</html>
