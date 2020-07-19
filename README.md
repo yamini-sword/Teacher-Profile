@@ -29,7 +29,7 @@ localhost:8000(local domain, this will be prefix for below mentioned URLs)
   
 ## Import Data
 
-import data should be kept under import folder in the base directory (directory in which manage.py resides) and it should be of CSV format.
+import data should be of CSV format.
 
 ## Database
 
